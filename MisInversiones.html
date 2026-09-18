@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Control de Inversiones</title>
+    
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-4 sm:p-6 pb-12">
+
+    <main class="w-full max-w-md mx-auto bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 border border-slate-800 my-auto">
+        
+        <!-- Header -->
+        <header class="text-center mb-5">
+            <h1 class="text-2xl font-bold tracking-tight text-white mb-1">Control de Inversiones</h1>
+            <p class="text-xs text-slate-400">Renta Variable (3) & otros (5 valores)</p>
+        </header>
+
+        <!-- Form Container -->
+        <form id="calcForm" class="space-y-5" onsubmit="return false;">
+            
+            <!-- SECTION 1: The Main Three Values -->
+            <section class="bg-slate-800/40 border border-slate-800 rounded-2xl p-3.5 sm:p-4">
+                <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+                    <div>
+                        <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Fondos indexados (3 Valores)</h2>
+                        <p class="text-[10px] text-slate-400">Equivalen al 100% entre ellos</p>
+                    </div>
+                    <span id="group1TotalBadge" class="text-[11px] bg-emerald-500/10 text-emerald-300 font-semibold px-2.5 py-1 rounded-full border border-emerald-500/20">Suma: 0</span>
+                </div>
+
+                <!-- Visual Progress Bar for Group 1 -->
+                <div class="mb-3.5">
+                    <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-700/50">
+                        <div id="bar1" class="h-full bg-emerald-500 transition-all duration-300 rounded-l-full" style="width: 33.33%;"></div>
+                        <div id="bar2" class="h-full bg-sky-500 transition-all duration-300" style="width: 33.33%;"></div>
+                        <div id="bar3" class="h-full bg-amber-500 transition-all duration-300 rounded-r-full" style="width: 33.33%;"></div>
+                    </div>
+                </div>
+
+                <!-- Inputs 1, 2, 3 -->
+                <div class="space-y-2.5">
+                    <!-- Value 1 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <div class="w-2 h-7 bg-emerald-500 rounded-full shrink-0"></div>
+                            <div class="flex-1">
+                                <label for="val1" class="block text-[10px] font-medium text-slate-400 mb-0.5">MSCI World</label>
+                                <input type="number" id="val1" inputmode="decimal" placeholder="0" 
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-emerald-500 transition">
+                            </div>
+                        </div>
+                        <div class="text-right pl-3 shrink-0">
+                            <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
+                            <span id="pct1_group1" class="text-base font-bold text-emerald-400">0.0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Value 2 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <div class="w-2 h-7 bg-sky-500 rounded-full shrink-0"></div>
+                            <div class="flex-1">
+                                <label for="val2" class="block text-[10px] font-medium text-slate-400 mb-0.5">Emergentes</label>
+                                <input type="number" id="val2" inputmode="decimal" placeholder="0" 
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-sky-500 transition">
+                            </div>
+                        </div>
+                        <div class="text-right pl-3 shrink-0">
+                            <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
+                            <span id="pct2_group1" class="text-base font-bold text-sky-400">0.0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Value 3 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <div class="w-2 h-7 bg-amber-500 rounded-full shrink-0"></div>
+                            <div class="flex-1">
+                                <label for="val3" class="block text-[10px] font-medium text-slate-400 mb-0.5">SmallCaps</label>
+                                <input type="number" id="val3" inputmode="decimal" placeholder="0" 
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-amber-500 transition">
+                            </div>
+                        </div>
+                        <div class="text-right pl-3 shrink-0">
+                            <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
+                            <span id="pct3_group1" class="text-base font-bold text-amber-400">0.0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Additional Values (4 & 5) -->
+            <section class="bg-slate-800/40 border border-slate-800 rounded-2xl p-3.5 sm:p-4">
+                <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+                    <div>
+                        <h2 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Otros</h2>
+                        <p class="text-[10px] text-slate-400">Para completar los 5 valores</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <!-- Value 4 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <div class="w-2 h-7 bg-purple-500 rounded-full shrink-0"></div>
+                            <div class="flex-1">
+                                <label for="val4" class="block text-[10px] font-medium text-slate-400 mb-0.5">Monetarios</label>
+                                <input type="number" id="val4" inputmode="decimal" placeholder="0" 
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-purple-500 transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Value 5 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <div class="w-2 h-7 bg-rose-500 rounded-full shrink-0"></div>
+                            <div class="flex-1">
+                                <label for="val5" class="block text-[10px] font-medium text-slate-400 mb-0.5">Renta fija</label>
+                                <input type="number" id="val5" inputmode="decimal" placeholder="0" 
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-rose-500 transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Summary Table & Second Progress Bar for all 5 Values -->
+            <section class="bg-gradient-to-br from-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-3.5 sm:p-4 shadow-lg">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Resumen Global (5 Valores)</span>
+                    <span id="totalSumAll" class="text-[11px] font-bold text-white bg-indigo-600/40 px-2.5 py-1 rounded-full border border-indigo-500/30">Total: 0</span>
+                </div>
+
+                <!-- Visual Progress Bar for All 5 Values -->
+                <div class="mb-3.5">
+                    <div class="h-3 w-full bg-slate-900 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-800">
+                        <div id="totBar1" class="h-full bg-emerald-500 transition-all duration-300 rounded-l-full" style="width: 20%;"></div>
+                        <div id="totBar2" class="h-full bg-sky-500 transition-all duration-300" style="width: 20%;"></div>
+                        <div id="totBar3" class="h-full bg-amber-500 transition-all duration-300" style="width: 20%;"></div>
+                        <div id="totBar4" class="h-full bg-purple-500 transition-all duration-300" style="width: 20%;"></div>
+                        <div id="totBar5" class="h-full bg-rose-500 transition-all duration-300 rounded-r-full" style="width: 20%;"></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-5 gap-1 text-center">
+                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0.5">V1</span>
+                        <span id="pct1_total" class="text-xs font-bold text-emerald-400">0%</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0.5">V2</span>
+                        <span id="pct2_total" class="text-xs font-bold text-sky-400">0%</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0.5">V3</span>
+                        <span id="pct3_total" class="text-xs font-bold text-amber-400">0%</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0.5">V4</span>
+                        <span id="pct4_total" class="text-xs font-bold text-purple-400">0%</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0.5">V5</span>
+                        <span id="pct5_total" class="text-xs font-bold text-rose-400">0%</span>
+                    </div>
+                </div>
+            </section>
+
+        </form>
+
+        <div class="mt-5 space-y-2">
+            <button id="resetBtn" type="button" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-3 px-4 rounded-xl shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Limpiar Todos los Datos</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-[11px] text-slate-500 py-1">
+        PWA Optimizada para Xiaomi Redmi Note 14 5G
+    </footer>
+
+    <script>
+        // Register Service Worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('ServiceWorker registrado con éxito:', reg.scope))
+                    .catch(err => console.log('Error al registrar ServiceWorker:', err));
+            });
+        }
+
+        const STORAGE_KEY = 'redmi_note_14_pwa_percentages_v1';
+
+        const inputs = [
+            document.getElementById('val1'),
+            document.getElementById('val2'),
+            document.getElementById('val3'),
+            document.getElementById('val4'),
+            document.getElementById('val5')
+        ];
+
+        // Group 1 indicators
+        const pct1_g1 = document.getElementById('pct1_group1');
+        const pct2_g1 = document.getElementById('pct2_group1');
+        const pct3_g1 = document.getElementById('pct3_group1');
+        const group1TotalBadge = document.getElementById('group1TotalBadge');
+
+        // Group 1 bars
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+
+        // Total 5 indicators & bars
+        const pct1_tot = document.getElementById('pct1_total');
+        const pct2_tot = document.getElementById('pct2_total');
+        const pct3_tot = document.getElementById('pct3_total');
+        const pct4_tot = document.getElementById('pct4_total');
+        const pct5_tot = document.getElementById('pct5_total');
+        const totalSumAll = document.getElementById('totalSumAll');
+
+        const totBar1 = document.getElementById('totBar1');
+        const totBar2 = document.getElementById('totBar2');
+        const totBar3 = document.getElementById('totBar3');
+        const totBar4 = document.getElementById('totBar4');
+        const totBar5 = document.getElementById('totBar5');
+
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Load saved values from localStorage
+        function loadSavedValues() {
+            try {
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    inputs.forEach((input, index) => {
+                        if (parsed[index] !== undefined && parsed[index] !== null) {
+                            input.value = parsed[index];
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Error al cargar localStorage", e);
+            }
+        }
+
+        // Save current values to localStorage
+        function saveValues() {
+            try {
+                const dataToSave = inputs.map(input => input.value);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+            } catch (e) {
+                console.error("Error al guardar en localStorage", e);
+            }
+        }
+
+        function getNumericValue(element) {
+            const val = parseFloat(element.value);
+            return isNaN(val) || val < 0 ? 0 : val;
+        }
+
+        // Calculation core
+        function calculatePercentages() {
+            const vals = inputs.map(input => getNumericValue(input));
+            
+            // 1. Group 1 Calculation (Values 1, 2, 3 relative to each other)
+            const sumGroup1 = vals[0] + vals[1] + vals[2];
+            group1TotalBadge.textContent = `Suma: ${sumGroup1.toLocaleString('es-ES', { maximumFractionDigits: 2 })}`;
+
+            let p1_g1 = 0, p2_g1 = 0, p3_g1 = 0;
+            if (sumGroup1 > 0) {
+                p1_g1 = (vals[0] / sumGroup1) * 100;
+                p2_g1 = (vals[1] / sumGroup1) * 100;
+                p3_g1 = (vals[2] / sumGroup1) * 100;
+            }
+
+            pct1_g1.textContent = p1_g1.toFixed(1) + '%';
+            pct2_g1.textContent = p2_g1.toFixed(1) + '%';
+            pct3_g1.textContent = p3_g1.toFixed(1) + '%';
+
+            bar1.style.width = p1_g1 + '%';
+            bar2.style.width = p2_g1 + '%';
+            bar3.style.width = p3_g1 + '%';
+
+            // 2. Global Total Calculation (All 5 values relative to overall sum)
+            const sumAll = vals.reduce((acc, curr) => acc + curr, 0);
+            totalSumAll.textContent = `Total: ${sumAll.toLocaleString('es-ES', { maximumFractionDigits: 2 })}`;
+
+            let p_tot = [0, 0, 0, 0, 0];
+            if (sumAll > 0) {
+                p_tot = vals.map(v => (v / sumAll) * 100);
+            }
+
+            pct1_tot.textContent = p_tot[0].toFixed(0) + '%';
+            pct2_tot.textContent = p_tot[1].toFixed(0) + '%';
+            pct3_tot.textContent = p_tot[2].toFixed(0) + '%';
+            pct4_tot.textContent = p_tot[3].toFixed(0) + '%';
+            pct5_tot.textContent = p_tot[4].toFixed(0) + '%';
+
+            totBar1.style.width = p_tot[0] + '%';
+            totBar2.style.width = p_tot[1] + '%';
+            totBar3.style.width = p_tot[2] + '%';
+            totBar4.style.width = p_tot[3] + '%';
+            totBar5.style.width = p_tot[4] + '%';
+
+            // Save to persistent memory
+            saveValues();
+        }
+
+        // Attach event listeners
+        inputs.forEach(input => {
+            input.addEventListener('input', calculatePercentages);
+            input.addEventListener('focus', function() {
+                this.select();
+            });
+        });
+
+        resetBtn.addEventListener('click', () => {
+            inputs.forEach(input => input.value = '');
+            localStorage.removeItem(STORAGE_KEY);
+            calculatePercentages();
+            inputs[0].focus();
+        });
+
+        // Initialize on window load
+        window.onload = function() {
+            loadSavedValues();
+            calculatePercentages();
+        };
+    </script>
+</body>
+</html>
