@@ -26,32 +26,32 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-4 sm:p-6 pb-12">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-1.5 sm:p-3">
 
-    <main class="w-full max-w-md mx-auto bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 border border-slate-800 my-auto">
+    <main class="w-full max-w-lg mx-auto bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl p-2.5 sm:p-4 border border-slate-800 my-auto">
         
         <!-- Header -->
-        <header class="text-center mb-5">
-            <h1 class="text-2xl font-bold tracking-tight text-white mb-1">Control de Inversiones</h1>
-            <p class="text-xs text-slate-400">Renta Variable (3) & otros (5 valores)</p>
+        <header class="text-center mb-2">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white mb-0">Control de Inversiones</h1>
+            <p class="text-[10px] text-slate-400">Renta Variable (3) & otros (5 valores)</p>
         </header>
 
         <!-- Form Container -->
-        <form id="calcForm" class="space-y-5" onsubmit="return false;">
+        <form id="calcForm" class="space-y-2" onsubmit="return false;">
             
             <!-- SECTION 1: The Main Three Values -->
-            <section class="bg-slate-800/40 border border-slate-800 rounded-2xl p-3.5 sm:p-4">
-                <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+            <section class="bg-slate-800/40 border border-slate-800 rounded-xl p-2.5">
+                <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
                     <div>
-                        <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Fondos indexados (3 Valores)</h2>
-                        <p class="text-[10px] text-slate-400">Equivalen al 100% entre ellos</p>
+                        <h2 class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Fondos indexados (3 Valores)</h2>
+                        <p class="text-[9px] text-slate-400">Equivalen al 100% entre ellos</p>
                     </div>
-                    <span id="group1TotalBadge" class="text-[11px] bg-emerald-500/10 text-emerald-300 font-semibold px-2.5 py-1 rounded-full border border-emerald-500/20">Suma: 0</span>
+                    <span id="group1TotalBadge" class="text-xs bg-emerald-500/10 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/20">Suma: 0</span>
                 </div>
 
                 <!-- Visual Progress Bar for Group 1 -->
-                <div class="mb-3.5">
-                    <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-700/50">
+                <div class="mb-2">
+                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-700/50">
                         <div id="bar1" class="h-full bg-emerald-500 transition-all duration-300 rounded-l-full" style="width: 33.33%;"></div>
                         <div id="bar2" class="h-full bg-sky-500 transition-all duration-300" style="width: 33.33%;"></div>
                         <div id="bar3" class="h-full bg-amber-500 transition-all duration-300 rounded-r-full" style="width: 33.33%;"></div>
@@ -59,87 +59,87 @@
                 </div>
 
                 <!-- Inputs 1, 2, 3 -->
-                <div class="space-y-2.5">
+                <div class="space-y-1.5">
                     <!-- Value 1 -->
-                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center space-x-3 flex-1">
-                            <div class="w-2 h-7 bg-emerald-500 rounded-full shrink-0"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-1.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <div class="w-1.5 h-7 bg-emerald-500 rounded-full shrink-0"></div>
                             <div class="flex-1">
-                                <label for="val1" class="block text-[10px] font-medium text-slate-400 mb-0.5">MSCI World</label>
+                                <label for="val1" class="block text-[10px] font-medium text-slate-300 mb-0">MSCI World</label>
                                 <input type="number" id="val1" inputmode="decimal" placeholder="0" 
-                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-emerald-500 transition">
+                                    class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white font-bold text-base focus:outline-none focus:border-emerald-500 transition">
                             </div>
                         </div>
-                        <div class="text-right pl-3 shrink-0">
+                        <div class="text-right pl-2.5 shrink-0">
                             <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
-                            <span id="pct1_group1" class="text-base font-bold text-emerald-400">0.0%</span>
+                            <span id="pct1_group1" class="text-lg font-extrabold text-emerald-400">0.0%</span>
                         </div>
                     </div>
 
                     <!-- Value 2 -->
-                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center space-x-3 flex-1">
-                            <div class="w-2 h-7 bg-sky-500 rounded-full shrink-0"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-1.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <div class="w-1.5 h-7 bg-sky-500 rounded-full shrink-0"></div>
                             <div class="flex-1">
-                                <label for="val2" class="block text-[10px] font-medium text-slate-400 mb-0.5">Emergentes</label>
+                                <label for="val2" class="block text-[10px] font-medium text-slate-300 mb-0">Emergentes</label>
                                 <input type="number" id="val2" inputmode="decimal" placeholder="0" 
-                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-sky-500 transition">
+                                    class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white font-bold text-base focus:outline-none focus:border-sky-500 transition">
                             </div>
                         </div>
-                        <div class="text-right pl-3 shrink-0">
+                        <div class="text-right pl-2.5 shrink-0">
                             <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
-                            <span id="pct2_group1" class="text-base font-bold text-sky-400">0.0%</span>
+                            <span id="pct2_group1" class="text-lg font-extrabold text-sky-400">0.0%</span>
                         </div>
                     </div>
 
                     <!-- Value 3 -->
-                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center space-x-3 flex-1">
-                            <div class="w-2 h-7 bg-amber-500 rounded-full shrink-0"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-1.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <div class="w-1.5 h-7 bg-amber-500 rounded-full shrink-0"></div>
                             <div class="flex-1">
-                                <label for="val3" class="block text-[10px] font-medium text-slate-400 mb-0.5">SmallCaps</label>
+                                <label for="val3" class="block text-[10px] font-medium text-slate-300 mb-0">SmallCaps</label>
                                 <input type="number" id="val3" inputmode="decimal" placeholder="0" 
-                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-amber-500 transition">
+                                    class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white font-bold text-base focus:outline-none focus:border-amber-500 transition">
                             </div>
                         </div>
-                        <div class="text-right pl-3 shrink-0">
+                        <div class="text-right pl-2.5 shrink-0">
                             <span class="block text-[9px] text-slate-400 font-medium">% Grupo</span>
-                            <span id="pct3_group1" class="text-base font-bold text-amber-400">0.0%</span>
+                            <span id="pct3_group1" class="text-lg font-extrabold text-amber-400">0.0%</span>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- SECTION 2: Additional Values (4 & 5) -->
-            <section class="bg-slate-800/40 border border-slate-800 rounded-2xl p-3.5 sm:p-4">
-                <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+            <section class="bg-slate-800/40 border border-slate-800 rounded-xl p-2.5">
+                <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
                     <div>
-                        <h2 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Otros</h2>
-                        <p class="text-[10px] text-slate-400">Para completar los 5 valores</p>
+                        <h2 class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider">Otros</h2>
+                        <p class="text-[9px] text-slate-400">Para completar los 5 valores</p>
                     </div>
                 </div>
 
-                <div class="space-y-2.5">
+                <div class="space-y-1.5">
                     <!-- Value 4 -->
-                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center space-x-3 flex-1">
-                            <div class="w-2 h-7 bg-purple-500 rounded-full shrink-0"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-1.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <div class="w-1.5 h-7 bg-purple-500 rounded-full shrink-0"></div>
                             <div class="flex-1">
-                                <label for="val4" class="block text-[10px] font-medium text-slate-400 mb-0.5">Monetarios</label>
+                                <label for="val4" class="block text-[10px] font-medium text-slate-300 mb-0">Monetarios</label>
                                 <input type="number" id="val4" inputmode="decimal" placeholder="0" 
-                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-purple-500 transition">
+                                    class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white font-bold text-base focus:outline-none focus:border-purple-500 transition">
                             </div>
                         </div>
                     </div>
 
                     <!-- Value 5 -->
-                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center space-x-3 flex-1">
-                            <div class="w-2 h-7 bg-rose-500 rounded-full shrink-0"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-1.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <div class="w-1.5 h-7 bg-rose-500 rounded-full shrink-0"></div>
                             <div class="flex-1">
-                                <label for="val5" class="block text-[10px] font-medium text-slate-400 mb-0.5">Renta fija</label>
+                                <label for="val5" class="block text-[10px] font-medium text-slate-300 mb-0">Renta fija</label>
                                 <input type="number" id="val5" inputmode="decimal" placeholder="0" 
-                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-semibold text-sm focus:outline-none focus:border-rose-500 transition">
+                                    class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-white font-bold text-base focus:outline-none focus:border-rose-500 transition">
                             </div>
                         </div>
                     </div>
@@ -147,15 +147,15 @@
             </section>
 
             <!-- SECTION 3: Summary Table & Second Progress Bar for all 5 Values -->
-            <section class="bg-gradient-to-br from-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-3.5 sm:p-4 shadow-lg">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Resumen Global (5 Valores)</span>
-                    <span id="totalSumAll" class="text-[11px] font-bold text-white bg-indigo-600/40 px-2.5 py-1 rounded-full border border-indigo-500/30">Total: 0</span>
+            <section class="bg-gradient-to-br from-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-xl p-2.5 shadow-lg">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[11px] uppercase font-bold tracking-wider text-indigo-300">Resumen Global (5 Valores)</span>
+                    <span id="totalSumAll" class="text-xs font-bold text-white bg-indigo-600/40 px-2 py-0.5 rounded-full border border-indigo-500/30">Total: 0</span>
                 </div>
 
                 <!-- Visual Progress Bar for All 5 Values -->
-                <div class="mb-3.5">
-                    <div class="h-3 w-full bg-slate-900 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-800">
+                <div class="mb-2">
+                    <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden flex shadow-inner p-0.5 border border-slate-800">
                         <div id="totBar1" class="h-full bg-emerald-500 transition-all duration-300 rounded-l-full" style="width: 20%;"></div>
                         <div id="totBar2" class="h-full bg-sky-500 transition-all duration-300" style="width: 20%;"></div>
                         <div id="totBar3" class="h-full bg-amber-500 transition-all duration-300" style="width: 20%;"></div>
@@ -165,34 +165,34 @@
                 </div>
                 
                 <div class="grid grid-cols-5 gap-1 text-center">
-                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
-                        <span class="block text-[9px] text-slate-400 mb-0.5">V1</span>
-                        <span id="pct1_total" class="text-xs font-bold text-emerald-400">0%</span>
+                    <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0 font-medium">V1</span>
+                        <span id="pct1_total" class="text-sm font-extrabold text-emerald-400">0%</span>
                     </div>
-                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
-                        <span class="block text-[9px] text-slate-400 mb-0.5">V2</span>
-                        <span id="pct2_total" class="text-xs font-bold text-sky-400">0%</span>
+                    <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0 font-medium">V2</span>
+                        <span id="pct2_total" class="text-sm font-extrabold text-sky-400">0%</span>
                     </div>
-                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
-                        <span class="block text-[9px] text-slate-400 mb-0.5">V3</span>
-                        <span id="pct3_total" class="text-xs font-bold text-amber-400">0%</span>
+                    <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0 font-medium">V3</span>
+                        <span id="pct3_total" class="text-sm font-extrabold text-amber-400">0%</span>
                     </div>
-                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
-                        <span class="block text-[9px] text-slate-400 mb-0.5">V4</span>
-                        <span id="pct4_total" class="text-xs font-bold text-purple-400">0%</span>
+                    <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0 font-medium">V4</span>
+                        <span id="pct4_total" class="text-sm font-extrabold text-purple-400">0%</span>
                     </div>
-                    <div class="bg-slate-900/90 p-1.5 rounded-lg border border-slate-800">
-                        <span class="block text-[9px] text-slate-400 mb-0.5">V5</span>
-                        <span id="pct5_total" class="text-xs font-bold text-rose-400">0%</span>
+                    <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800">
+                        <span class="block text-[9px] text-slate-400 mb-0 font-medium">V5</span>
+                        <span id="pct5_total" class="text-sm font-extrabold text-rose-400">0%</span>
                     </div>
                 </div>
             </section>
 
         </form>
 
-        <div class="mt-5 space-y-2">
-            <button id="resetBtn" type="button" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-3 px-4 rounded-xl shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mt-2">
+            <button id="resetBtn" type="button" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-2 px-3 rounded-lg shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 <span>Limpiar Todos los Datos</span>
@@ -202,7 +202,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-[11px] text-slate-500 py-1">
+    <footer class="text-center text-[9px] text-slate-500 py-0.5">
         PWA Optimizada para Xiaomi Redmi Note 14 5G
     </footer>
 
