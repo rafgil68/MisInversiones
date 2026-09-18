@@ -28,7 +28,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-[100dvh] flex flex-col justify-between p-1 sm:p-3">
 
-    <main class="w-full max-w-lg mx-auto bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl p-2 sm:p-4 border border-slate-800 my-auto">
+    <main id="viewMain" class="w-full max-w-lg mx-auto bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl p-2 sm:p-4 border border-slate-800 my-auto">
         
         <!-- Header -->
         <header class="text-center mb-1.5">
@@ -190,8 +190,14 @@
 
         </form>
 
-        <div class="mt-1.5">
-            <button id="resetBtn" type="button" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-2.5 px-3 rounded-lg shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-sm">
+        <div class="mt-1.5 flex gap-1.5">
+            <button id="openRebBtn" type="button" class="shrink-0 bg-indigo-600/40 hover:bg-indigo-600/60 active:scale-[0.98] transition text-indigo-100 font-semibold py-2.5 px-3 rounded-lg shadow border border-indigo-500/40 flex items-center justify-center space-x-2 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                </svg>
+                <span>Rebalanceo</span>
+            </button>
+            <button id="resetBtn" type="button" class="flex-1 min-w-0 whitespace-nowrap bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-2.5 px-2 rounded-lg shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -199,6 +205,169 @@
             </button>
         </div>
 
+    </main>
+
+    <!-- ============ PANTALLA DE REBALANCEO ============ -->
+    <main id="viewRebal" class="hidden w-full max-w-lg mx-auto bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl p-2 sm:p-4 border border-slate-800 my-auto">
+
+        <header class="text-center mb-1.5">
+            <h1 class="text-xl sm:text-2xl leading-tight font-bold tracking-tight text-white mb-0">Rebalanceo</h1>
+            <p class="text-xs leading-tight text-slate-400">Cuánto añadir a cada concepto para llegar a tu objetivo</p>
+        </header>
+
+        <div class="space-y-1.5">
+
+            <!-- Aportación -->
+            <section class="bg-slate-800/40 border border-slate-800 rounded-xl p-2">
+                <div class="mb-1 pb-1 border-b border-slate-800">
+                    <h2 class="text-xs leading-tight font-bold text-indigo-400 uppercase tracking-wide">Aportación</h2>
+                    <p class="text-[11px] leading-tight text-slate-400">Cantidad que vas a añadir a las inversiones</p>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2 flex-1 min-w-0">
+                        <div class="w-1.5 h-10 bg-indigo-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <label for="addAmount" class="block text-[13px] leading-tight font-medium text-slate-300 mb-0">Cantidad a añadir</label>
+                            <input type="number" id="addAmount" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-2 py-0.5 text-white font-bold text-2xl leading-7 focus:outline-none focus:border-indigo-500 transition">
+                        </div>
+                    </div>
+                    <div class="text-right pl-2 shrink-0">
+                        <span class="block text-xs leading-none text-slate-400 font-medium mb-0.5">Total tras añadir</span>
+                        <span id="totalAfter" class="text-xl leading-none font-extrabold text-indigo-300">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Objetivos y resultado -->
+            <section class="bg-slate-800/40 border border-slate-800 rounded-xl p-2">
+                <div class="flex items-center justify-between gap-2 mb-1 pb-1 border-b border-slate-800">
+                    <div>
+                        <h2 class="text-xs leading-tight font-bold text-emerald-400 uppercase tracking-wide">Objetivo por concepto</h2>
+                        <p class="text-[11px] leading-tight text-slate-400">Edita el % que quieres para cada uno</p>
+                    </div>
+                    <span id="tgtSumBadge" class="text-sm whitespace-nowrap bg-emerald-500/10 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/20">Suma: 0%</span>
+                </div>
+
+                <div class="space-y-1.5">
+                    <!-- Concepto 1 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center gap-2 shadow-sm">
+                        <div class="w-1.5 h-10 bg-emerald-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-[13px] leading-tight font-medium text-slate-300">MSCI World</span>
+                            <div class="flex items-baseline gap-1 flex-wrap">
+                                <span id="cur1" class="text-xl leading-tight font-extrabold text-emerald-400">0.0%</span>
+                                <span id="post1" class="text-xs text-slate-400">→ 0.0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 shrink-0">
+                            <label for="tgt1" class="block text-[11px] leading-tight text-slate-400 font-medium">Objetivo %</label>
+                            <input type="number" id="tgt1" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-white font-bold text-xl leading-6 text-center focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div class="w-[92px] shrink-0 text-right">
+                            <span class="block text-[11px] leading-tight text-slate-400 font-medium">Añadir</span>
+                            <span id="add1" class="block text-xl leading-7 font-extrabold text-emerald-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Concepto 2 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center gap-2 shadow-sm">
+                        <div class="w-1.5 h-10 bg-sky-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-[13px] leading-tight font-medium text-slate-300">Emergentes</span>
+                            <div class="flex items-baseline gap-1 flex-wrap">
+                                <span id="cur2" class="text-xl leading-tight font-extrabold text-sky-400">0.0%</span>
+                                <span id="post2" class="text-xs text-slate-400">→ 0.0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 shrink-0">
+                            <label for="tgt2" class="block text-[11px] leading-tight text-slate-400 font-medium">Objetivo %</label>
+                            <input type="number" id="tgt2" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-white font-bold text-xl leading-6 text-center focus:outline-none focus:border-sky-500 transition">
+                        </div>
+                        <div class="w-[92px] shrink-0 text-right">
+                            <span class="block text-[11px] leading-tight text-slate-400 font-medium">Añadir</span>
+                            <span id="add2" class="block text-xl leading-7 font-extrabold text-sky-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Concepto 3 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center gap-2 shadow-sm">
+                        <div class="w-1.5 h-10 bg-amber-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-[13px] leading-tight font-medium text-slate-300">SmallCaps</span>
+                            <div class="flex items-baseline gap-1 flex-wrap">
+                                <span id="cur3" class="text-xl leading-tight font-extrabold text-amber-400">0.0%</span>
+                                <span id="post3" class="text-xs text-slate-400">→ 0.0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 shrink-0">
+                            <label for="tgt3" class="block text-[11px] leading-tight text-slate-400 font-medium">Objetivo %</label>
+                            <input type="number" id="tgt3" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-white font-bold text-xl leading-6 text-center focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                        <div class="w-[92px] shrink-0 text-right">
+                            <span class="block text-[11px] leading-tight text-slate-400 font-medium">Añadir</span>
+                            <span id="add3" class="block text-xl leading-7 font-extrabold text-amber-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Concepto 4 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center gap-2 shadow-sm">
+                        <div class="w-1.5 h-10 bg-purple-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-[13px] leading-tight font-medium text-slate-300">Monetarios</span>
+                            <div class="flex items-baseline gap-1 flex-wrap">
+                                <span id="cur4" class="text-xl leading-tight font-extrabold text-purple-400">0.0%</span>
+                                <span id="post4" class="text-xs text-slate-400">→ 0.0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 shrink-0">
+                            <label for="tgt4" class="block text-[11px] leading-tight text-slate-400 font-medium">Objetivo %</label>
+                            <input type="number" id="tgt4" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-white font-bold text-xl leading-6 text-center focus:outline-none focus:border-purple-500 transition">
+                        </div>
+                        <div class="w-[92px] shrink-0 text-right">
+                            <span class="block text-[11px] leading-tight text-slate-400 font-medium">Añadir</span>
+                            <span id="add4" class="block text-xl leading-7 font-extrabold text-purple-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Concepto 5 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-lg px-2 py-1 flex items-center gap-2 shadow-sm">
+                        <div class="w-1.5 h-10 bg-rose-500 rounded-full shrink-0"></div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-[13px] leading-tight font-medium text-slate-300">Renta fija</span>
+                            <div class="flex items-baseline gap-1 flex-wrap">
+                                <span id="cur5" class="text-xl leading-tight font-extrabold text-rose-400">0.0%</span>
+                                <span id="post5" class="text-xs text-slate-400">→ 0.0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 shrink-0">
+                            <label for="tgt5" class="block text-[11px] leading-tight text-slate-400 font-medium">Objetivo %</label>
+                            <input type="number" id="tgt5" inputmode="decimal" placeholder="0"
+                                class="w-full bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-white font-bold text-xl leading-6 text-center focus:outline-none focus:border-rose-500 transition">
+                        </div>
+                        <div class="w-[92px] shrink-0 text-right">
+                            <span class="block text-[11px] leading-tight text-slate-400 font-medium">Añadir</span>
+                            <span id="add5" class="block text-xl leading-7 font-extrabold text-rose-400">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="rebStatus" class="mt-1.5 min-h-[32px] flex items-center justify-center text-center text-xs leading-tight text-slate-400"></p>
+            </section>
+        </div>
+
+        <div class="mt-1.5">
+            <button id="backBtn" type="button" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-white font-semibold py-2.5 px-3 rounded-lg shadow border border-slate-700/50 flex items-center justify-center space-x-2 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>Volver</span>
+            </button>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -348,10 +517,171 @@
             inputs[0].focus();
         });
 
+        // =====================================================
+        // REBALANCEO
+        // =====================================================
+        const REB_KEY = 'redmi_note_14_pwa_rebalance_v1';
+        const viewMain = document.getElementById('viewMain');
+        const viewRebal = document.getElementById('viewRebal');
+        const openRebBtn = document.getElementById('openRebBtn');
+        const backBtn = document.getElementById('backBtn');
+
+        const amountInput = document.getElementById('addAmount');
+        const totalAfterEl = document.getElementById('totalAfter');
+        const tgtSumBadge = document.getElementById('tgtSumBadge');
+        const rebStatus = document.getElementById('rebStatus');
+        const tgtInputs = [1, 2, 3, 4, 5].map(i => document.getElementById('tgt' + i));
+        const curEls = [1, 2, 3, 4, 5].map(i => document.getElementById('cur' + i));
+        const postEls = [1, 2, 3, 4, 5].map(i => document.getElementById('post' + i));
+        const addEls = [1, 2, 3, 4, 5].map(i => document.getElementById('add' + i));
+
+        const BADGE_OK = 'text-sm whitespace-nowrap bg-emerald-500/10 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/20';
+        const BADGE_WARN = 'text-sm whitespace-nowrap bg-amber-500/10 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/20';
+        const STATUS_BASE = 'mt-1.5 min-h-[32px] flex items-center justify-center text-center text-xs leading-tight ';
+
+        function fmtMoney(n) {
+            return n.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+        }
+
+        function loadRebalance() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(REB_KEY) || 'null');
+                if (!saved) return;
+                tgtInputs.forEach((input, i) => {
+                    if (saved.targets && saved.targets[i] !== undefined && saved.targets[i] !== null) input.value = saved.targets[i];
+                });
+                if (saved.amount !== undefined && saved.amount !== null) amountInput.value = saved.amount;
+            } catch (e) {
+                console.error('Error al cargar rebalanceo', e);
+            }
+        }
+
+        function saveRebalance() {
+            try {
+                localStorage.setItem(REB_KEY, JSON.stringify({
+                    targets: tgtInputs.map(i => i.value),
+                    amount: amountInput.value
+                }));
+            } catch (e) {
+                console.error('Error al guardar rebalanceo', e);
+            }
+        }
+
+        // Reparto solo con aportacion (sin vender): cada concepto recibe
+        // max(0, objetivo_i * L - actual_i), donde L es el "total ideal" que hace
+        // que lo repartido sume exactamente la aportacion.
+        function calcRebalance() {
+            const V = inputs.map(getNumericValue);
+            const S = V.reduce((a, b) => a + b, 0);
+            const C = getNumericValue(amountInput);
+            const T = tgtInputs.map(getNumericValue);
+            const sumT = T.reduce((a, b) => a + b, 0);
+            const validT = Math.abs(sumT - 100) <= 0.1;
+
+            // % actual
+            V.forEach((v, i) => {
+                curEls[i].textContent = (S > 0 ? (v / S) * 100 : 0).toFixed(1) + '%';
+            });
+
+            // Suma de objetivos
+            tgtSumBadge.textContent = `Suma: ${sumT.toLocaleString('es-ES', { maximumFractionDigits: 2 })}%`;
+            tgtSumBadge.className = validT ? BADGE_OK : BADGE_WARN;
+
+            if (!validT) {
+                totalAfterEl.textContent = fmtMoney(S + C);
+                addEls.forEach(el => { el.textContent = '—'; el.classList.add('opacity-40'); });
+                postEls.forEach(el => { el.textContent = '→ —'; });
+                rebStatus.className = STATUS_BASE + 'text-amber-300';
+                rebStatus.textContent = `Los objetivos suman ${sumT.toLocaleString('es-ES', { maximumFractionDigits: 2 })}% y deben sumar 100%.`;
+                return;
+            }
+
+            const t = T.map(x => x / sumT);
+            const idx = t.map((_, i) => i).filter(i => t[i] > 0).sort((a, b) => V[a] / t[a] - V[b] / t[b]);
+
+            let sumV = 0, sumt = 0, L = 0;
+            for (let k = 0; k < idx.length; k++) {
+                const i = idx[k];
+                sumV += V[i];
+                sumt += t[i];
+                L = (C + sumV) / sumt;
+                const next = idx[k + 1];
+                if (next === undefined || L <= V[next] / t[next]) break;
+            }
+
+            const add = V.map((v, i) => t[i] > 0 ? Math.round(Math.max(0, t[i] * L - v) * 100) / 100 : 0);
+            const sumAdd = add.reduce((a, b) => a + b, 0);
+            const newTotal = S + sumAdd;
+
+            totalAfterEl.textContent = fmtMoney(S + C);
+            add.forEach((a, i) => {
+                const txt = fmtMoney(a);
+                addEls[i].textContent = txt;
+                addEls[i].classList.remove('text-xl', 'text-lg', 'text-sm');
+                addEls[i].classList.add(txt.length <= 6 ? 'text-xl' : txt.length <= 8 ? 'text-lg' : 'text-sm');
+                addEls[i].classList.toggle('opacity-40', a === 0);
+                const post = newTotal > 0 ? ((V[i] + a) / newTotal) * 100 : 0;
+                postEls[i].textContent = '→ ' + post.toFixed(1) + '%';
+            });
+
+            // ¿Se igualan todos los objetivos?
+            const exact = newTotal > 0 && V.every((v, i) => Math.abs(((v + add[i]) / newTotal) * 100 - t[i] * 100) < 0.05);
+            const blocked = V.some((v, i) => t[i] === 0 && v > 0);
+            const minNeeded = blocked ? null : Math.max(...idx.map(i => V[i] / t[i])) - S;
+
+            let msg, cls;
+            if (S === 0 && C === 0) {
+                msg = 'Introduce tus valores y la cantidad a añadir.'; cls = 'text-slate-400';
+            } else if (exact && C === 0) {
+                msg = 'Ya estás en tus porcentajes objetivo.'; cls = 'text-emerald-300';
+            } else if (exact) {
+                msg = 'Con esta cantidad igualas todos los objetivos.'; cls = 'text-emerald-300';
+            } else if (blocked) {
+                msg = 'Un concepto con objetivo 0% ya tiene dinero: no se puede igualar sin vender.'; cls = 'text-amber-300';
+            } else if (C === 0) {
+                msg = `Para igualar los objetivos necesitas añadir ${fmtMoney(Math.ceil(minNeeded * 100) / 100)}.`; cls = 'text-slate-400';
+            } else {
+                msg = `No llega para igualarlos sin vender. Mínimo necesario: ${fmtMoney(Math.ceil(minNeeded * 100) / 100)}. Se reparte entre los más bajos.`; cls = 'text-amber-300';
+            }
+            rebStatus.className = STATUS_BASE + cls;
+            rebStatus.textContent = msg;
+        }
+
+        // Navegacion entre pantallas (con hash para que el boton "atras" de Android funcione)
+        let openedInApp = false;
+        function syncView() {
+            const showReb = location.hash === '#rebalanceo';
+            viewMain.classList.toggle('hidden', showReb);
+            viewRebal.classList.toggle('hidden', !showReb);
+            if (showReb) calcRebalance();
+            window.scrollTo(0, 0);
+        }
+        window.addEventListener('hashchange', syncView);
+        openRebBtn.addEventListener('click', () => {
+            openedInApp = true;
+            location.hash = 'rebalanceo';
+        });
+        backBtn.addEventListener('click', () => {
+            if (openedInApp) {
+                history.back();
+            } else {
+                history.replaceState(null, '', location.pathname + location.search);
+                syncView();
+            }
+        });
+
+        [amountInput, ...tgtInputs].forEach(input => {
+            input.addEventListener('input', () => { calcRebalance(); saveRebalance(); });
+            input.addEventListener('focus', function () { this.select(); });
+        });
+
         // Initialize on window load
         window.onload = function() {
             loadSavedValues();
             calculatePercentages();
+            loadRebalance();
+            calcRebalance();
+            syncView();
         };
     </script>
 </body>
